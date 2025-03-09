@@ -1,0 +1,58 @@
+/* Page Styling */
+.alumni-container {
+    background-color: #e6f7e6; /* Light Green */
+    min-height: 100vh;
+    padding: 20px;
+    font-family: "Inter", sans-serif;
+    text-align: center;
+  }
+  
+  /* Title */
+  h1 {
+    color: #2e7d32; /* Dark Green */
+    margin-bottom: 20px;
+  }
+  
+  /* Filter Section */
+  .filter-container {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    font-weight: bold;
+    color: #2e7d32;
+    margin-right: 10px;
+  }
+  
+  select {
+    padding: 8px;
+    border: 2px solid #4caf50;
+    border-radius: 5px;
+    background: white;
+    font-size: 16px;
+  }
+  
+  /* Alumni List */
+  .alumni-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .alumni-item {
+    background: white;
+    padding: 12px;
+    margin: 8px auto;
+    width: 60%;
+    border-radius: 8px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 18px;
+    color: #2e7d32;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+  }
+  
+  .alumni-item:hover {
+    background-color: #4caf50;
+    color: white;
+  }
+  

@@ -1,0 +1,91 @@
+/* Full Page Styling */
+.admin-container {
+    background-color: #e6f7e6; /* Light Green */
+    min-height: 100vh;
+    padding: 20px;
+    font-family: "Inter", sans-serif;
+    text-align: center;
+  }
+  
+  /* Title */
+  h2 {
+    color: #2e7d32; /* Dark Green */
+    margin-bottom: 20px;
+  }
+  
+  /* Table Styling */
+  .user-table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Table Head */
+  .user-table th {
+    background-color: #4caf50;
+    color: white;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  /* Table Rows */
+  .user-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Status Styling */
+  .status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  /* Status Colors */
+  .status.approved {
+    background-color: #4caf50;
+    color: white;
+  }
+  .status.pending {
+    background-color: #ff9800;
+    color: white;
+  }
+  .status.disapproved {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  /* Buttons */
+  button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+  }
+  
+  .approve-btn {
+    background-color: #4caf50;
+    color: white;
+    margin-right: 5px;
+  }
+  
+  .approve-btn:hover {
+    background-color: #388e3c;
+  }
+  
+  .disapprove-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .disapprove-btn:hover {
+    background-color: #d32f2f;
+  }
+  

@@ -1,0 +1,170 @@
+/* Job Notification Page */
+.job-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 20px;
+    background: #e6f7e6; /* Light Green */
+    border: 2px solid #006400; /* Dark Green Border */
+    border-radius: 10px;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: "Inter", sans-serif;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #006400;
+    margin-bottom: 20px;
+  }
+  
+  .job-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* Job Cards */
+  .job-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 5px solid #006400;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .job-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .job-card h3 {
+    color: #006400;
+    margin-bottom: 5px;
+  }
+  
+  .job-card p {
+    color: #333;
+    font-size: 14px;
+  }
+  
+  /* Icons */
+  .job-icon {
+    font-size: 1.8rem;
+    color: #4CAF50;
+  }
+  
+  .event-icon {
+    font-size: 1.8rem;
+    color: #2196F3;
+  }
+  
+  /* Modal */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .modal-content h2 {
+    color: #006400;
+    margin-bottom: 10px;
+  }
+  
+  .modal-content p {
+    color: #333;
+    font-size: 14px;
+  }
+  
+  .close-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .close-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #444;
+    cursor: pointer;
+  }
+  
+  .close-icon:hover {
+    color: #000;
+  }
+  
+
+  .add-job-btn {
+    background: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 15px;
+  }
+  
+  .add-job-btn:hover {
+    background: #218838;
+  }
+  
+  .job-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .job-form input, 
+  .job-form select, 
+  .job-form textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .submit-btn {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .submit-btn:hover {
+    background: #0056b3;
+  }
+  
+  .modal-content {
+    width: 400px;
+  }
+  
