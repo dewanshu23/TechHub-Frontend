@@ -5,14 +5,72 @@ import "../CSS/Login.css"; // Import CSS file
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Login Successful");
-    navigate("/"); // Redirect to Home Page
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log("Login Successful");
+  //   navigate("/alumni-list"); // Redirect to Home Page
+  // };
 
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault(); // Prevent default form submission
+
+  //   try {
+  //     const response = await fetch("http://localhost:7070/login", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ email, password }),
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (response.ok) {
+  //       console.log("Login Successful");
+  //       navigate("/alumni-list"); // Redirect on success
+  //     } else {
+  //       setError(data.message || "Invalid credentials");
+  //     }
+  //   } catch (error) {
+  //     console.error("Login Error:", error);
+  //     setError("Something went wrong. Please try again.");
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    try {
+      const response = await fetch("http://localhost:7070/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password, // Make sure it's exactly what the backend expects
+        }),
+      });
+  
+      const data = await response.json();
+      console.log("API Response:", data);
+  
+      if (response.ok) {
+        console.log("Login Successful");
+        navigate("/alumni-list"); // Redirect after successful login
+      } else {
+        alert(data.message || "Login failed!");
+      }
+    } catch (error) {
+      console.error("Login Error:", error);
+      alert("Something went wrong. Try again!");
+    }
+  };
+  
   return (
     <div className="login-container">
       <div className="login-box">
@@ -23,6 +81,7 @@ const Login = () => {
           <input
             type="email"
             value={email}
+            // value="test@gmail.com"
             onChange={(e) => setEmail(e.target.value)}
             required
           />
@@ -32,6 +91,7 @@ const Login = () => {
           <input
             type="password"
             value={password}
+            // value="password123"
             onChange={(e) => setPassword(e.target.value)}
             required
           />
@@ -49,6 +109,7 @@ const Login = () => {
         <p className="signup-text">
           Don't have an account? <span onClick={() => navigate("/registration-page")}>Sign up</span>
         </p>
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </div>
     </div>
   );

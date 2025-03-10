@@ -13,23 +13,69 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
 
+  //   if (password !== confirmPassword) {
+  //     alert("Passwords do not match!");
+  //     return;
+  //   }
+
+  //   // Show success popup
+  //   setShowPopup(true);
+
+  //   // After 2 seconds, navigate to "/alumni-list"
+  //   setTimeout(() => {
+  //     setShowPopup(false);
+  //     navigate("/alumni-list");
+  //   }, 2000);
+  // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-
-    // Show success popup
-    setShowPopup(true);
-
-    // After 2 seconds, navigate to "/alumni-list"
-    setTimeout(() => {
-      setShowPopup(false);
-      navigate("/alumni-list");
-    }, 2000);
+  
+    try {
+      const response = await fetch("http://localhost:7070/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          name: fullName, // Ensure 'name' matches backend expectations
+          stream,
+          userRole: "Student", // Add 'userRole' as expected by backend
+          password,
+          confirmPassword,
+          passout: 0, // Add 'passout' as expected by backend
+          year,
+        }),
+      });
+  
+      const data = await response.json();
+      console.log("API Response:", data);
+  
+      if (response.ok) {
+        setShowPopup(true);
+        setTimeout(() => {
+          setShowPopup(false);
+          navigate("/alumni-list");
+        }, 2000);
+      } else {
+        alert(data.message || "Registration failed!");
+      }
+    } catch (error) {
+      console.error("Registration Error:", error);
+      alert("Something went wrong. Try again!");
+    }
   };
+  
+  
 
   return (
     <div className="register-container">
