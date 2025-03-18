@@ -41,6 +41,39 @@ const Login = () => {
   //   }
   // };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  
+  //   try {
+  //     const response = await fetch("http://localhost:7070/login", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         email,
+  //         password, // Make sure it's exactly what the backend expects
+  //       }),
+  //     });
+  
+  //     const data = await response.json();
+  //     console.log("API Response:", data);
+  
+  //     if (response.ok) {
+  //       console.log("Login Successful");
+  //       navigate("/alumni-list"); // Redirect after successful login
+  //     } else {
+  //       alert(data.message || "Login failed!");
+  //     }
+  //   } catch (error) {
+  //     console.error("Login Error:", error);
+  //     alert("Something went wrong. Try again!");
+  //   }
+  // };
+  
+
+  //changing handle submit to save userrole in localstorage
+
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -52,7 +85,7 @@ const Login = () => {
         },
         body: JSON.stringify({
           email,
-          password, // Make sure it's exactly what the backend expects
+          password, // Ensure it matches the backend's expected format
         }),
       });
   
@@ -61,7 +94,15 @@ const Login = () => {
   
       if (response.ok) {
         console.log("Login Successful");
-        navigate("/alumni-list"); // Redirect after successful login
+  
+        // Assuming the API response contains `role`, store it in localStorage
+        if (data.user_data.userrole) {
+          localStorage.setItem("userRole", data.user_data.userrole);
+        } else {
+          console.warn("Role not found in API response");
+        }
+  
+        navigate("/alumni-list"); // Redirect after storing role
       } else {
         alert(data.message || "Login failed!");
       }

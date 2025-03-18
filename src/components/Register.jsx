@@ -3,42 +3,30 @@ import { useNavigate } from "react-router-dom";
 import "../CSS/Register.css";
 
 const Register = () => {
+  const [isAlumni, setIsAlumni] = useState(false);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [stream, setStream] = useState("BSc IT");
-  const [year, setYear] = useState("First Year");
+  const [yearOrPassout, setYearOrPassout] = useState("First Year");
   const [showPopup, setShowPopup] = useState(false);
-
+  const [errorMessage, setErrorMessage] = useState(""); // State for error handling
   const navigate = useNavigate();
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   if (password !== confirmPassword) {
-  //     alert("Passwords do not match!");
-  //     return;
-  //   }
-
-  //   // Show success popup
-  //   setShowPopup(true);
-
-  //   // After 2 seconds, navigate to "/alumni-list"
-  //   setTimeout(() => {
-  //     setShowPopup(false);
-  //     navigate("/alumni-list");
-  //   }, 2000);
-  // };
+  const userTypeChanger = () => {
+    setIsAlumni(!isAlumni);
+    setYearOrPassout(isAlumni ? "First Year" : "2024"); // Default passout year
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      setErrorMessage("Passwords do not match!");
       return;
     }
-  
+
     try {
       const response = await fetch("http://localhost:7070/signup", {
         method: "POST",
@@ -47,40 +35,55 @@ const Register = () => {
         },
         body: JSON.stringify({
           email,
-          name: fullName, // Ensure 'name' matches backend expectations
+          name: fullName,
           stream,
-          userRole: "Student", // Add 'userRole' as expected by backend
+          userRole: isAlumni ? "Alumni" : "Student",
           password,
           confirmPassword,
-          passout: 0, // Add 'passout' as expected by backend
-          year,
+          passout: isAlumni ? yearOrPassout : 0,
+          year: isAlumni ? "PO" : yearOrPassout,
         }),
       });
-  
+
+      if (!response.ok) {
+        throw new Error(`HTTP Error! Status: ${response.status}`);
+      }
+
       const data = await response.json();
       console.log("API Response:", data);
-  
-      if (response.ok) {
-        setShowPopup(true);
-        setTimeout(() => {
-          setShowPopup(false);
-          navigate("/alumni-list");
-        }, 2000);
-      } else {
-        alert(data.message || "Registration failed!");
-      }
+
+      setShowPopup(true);
+      setTimeout(() => {
+        setShowPopup(false);
+        navigate("/");
+      }, 2000);
     } catch (error) {
       console.error("Registration Error:", error);
-      alert("Something went wrong. Try again!");
+      setErrorMessage("Failed to register. Please try again.");
     }
   };
-  
-  
 
   return (
     <div className="register-container">
       <div className="register-box">
-        <h2>Register</h2>
+        <div className="flex mb-10 items-center">
+          <b className="text-2xl flex-1">Register as</b>
+          <div className="flex-1 ml-5 flex items-center">
+            <span>Student</span>
+            <label className="toggle-switch">
+              <input
+                type="checkbox"
+                checked={isAlumni}
+                onChange={userTypeChanger}
+              />
+              <span className="slider"></span>
+            </label>
+            <span>Alumni</span>
+          </div>
+        </div>
+
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label>Full Name:</label>
@@ -112,11 +115,27 @@ const Register = () => {
           </div>
 
           <div className="input-group">
-            <label>Year:</label>
-            <select value={year} onChange={(e) => setYear(e.target.value)}>
-              <option value="First Year">First Year</option>
-              <option value="Second Year">Second Year</option>
-              <option value="Third Year">Third Year</option>
+            <label>{isAlumni ? "Passout Year:" : "Year:"}</label>
+            <select
+              value={yearOrPassout}
+              onChange={(e) => setYearOrPassout(e.target.value)}
+            >
+              {isAlumni ? (
+                [...Array(10)].map((_, i) => {
+                  const year = new Date().getFullYear() - i;
+                  return (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  );
+                })
+              ) : (
+                ["First Year", "Second Year", "Third Year"].map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))
+              )}
             </select>
           </div>
 
@@ -144,7 +163,6 @@ const Register = () => {
         </form>
       </div>
 
-      {/* Success Popup */}
       {showPopup && (
         <div className="popup">
           <p>Successfully Registered!</p>
