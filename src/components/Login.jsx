@@ -96,11 +96,22 @@ const Login = () => {
         console.log("Login Successful");
   
         // Assuming the API response contains `role`, store it in localStorage
-        if (data.user_data.userrole) {
-          localStorage.setItem("userRole", data.user_data.userrole);
+        if (data.user_data) {
+          const userDetails = {
+            id: data.user_data.id,
+            name: data.user_data.name,
+            email: data.user_data.email,
+            stream: data.user_data.stream || "", // Default empty string if not provided
+            passout: data.user_data.passout || 0, // Default value if null
+            year: data.user_data.year || "",
+            userrole: data.user_data.userrole || "User", // Default to "User" if not found
+          };
+        
+          localStorage.setItem("user", JSON.stringify(userDetails));
         } else {
-          console.warn("Role not found in API response");
+          console.warn("User data not found in API response");
         }
+        
   
         navigate("/alumni-list"); // Redirect after storing role
       } else {

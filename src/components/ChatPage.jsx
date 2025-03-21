@@ -1,70 +1,66 @@
-import React, { useState, useEffect } from "react";
-import '../CSS/ChatPage.css'
+import { useEffect, useState } from "react";
+import axios from "axios";
+import "../CSS/ChatPage.css"; // Import CSS file
 
 const ChatPage = () => {
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
-  const user = JSON.parse(localStorage.getItem("user")); // Assuming user info is stored in localStorage
+  const [chats, setChats] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [message, setMessage] = useState("");
+  
+  const user = JSON.parse(localStorage.getItem("user")); // Convert string to object
+  const userId = user ? user.id : null;
 
-  // useEffect(() => {
-  //   const fetchMessages = async () => {
-  //     try {
-  //       // const response = await fetch("http://localhost:7070/chat");
-  //       const data = await response.json();
-  //       setMessages(data);
-  //     } catch (error) {
-  //       console.error("Error fetching messages:", error);
-  //     }
-  //   };
+  useEffect(() => {
+    fetchChats();
+  }, []);
 
-  //   fetchMessages();
-  //   const interval = setInterval(fetchMessages, 3000); // Poll every 3 seconds
-  //   return () => clearInterval(interval);
-  // }, []);
+  const fetchChats = async () => {
+    try {
+      const response = await axios.get("http://localhost:7070/getAllChats");
+      setChats(response.data.chat.chats);
+      setUsers(response.data.chat.users);
+    } catch (error) {
+      console.error("Error fetching chats:", error);
+    }
+  };
 
-  // const sendMessage = async () => {
-  //   if (!newMessage.trim()) return;
+  const sendMessage = async () => {
+    if (!message.trim() || !userId) return;
 
-  //   const messageData = {
-  //     userRole: user.userRole,
-  //     username: user.name,
-  //     text: newMessage,
-  //   };
+    try {
+      await axios.post("http://localhost:7070/chatEntry", {
+        user_id: userId,
+        chat_content: message,
+      });
+      setMessage("");
+      fetchChats(); // Refresh chat list after sending message
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
 
-  //   try {
-  //     const response = await fetch("http://localhost:7070/chat", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify(messageData),
-  //     });
-
-  //     if (response.ok) {
-  //       setNewMessage("");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error sending message:", error);
-  //   }
-  // };
+  const getUserName = (id) => {
+    const user = users.find((u) => u.id === id);
+    return user ? user.name : "Unknown User";
+  };
 
   return (
     <div className="chat-container">
-      <h2>Global Chat</h2>
       <div className="chat-box">
-        {messages.map((msg, index) => (
-          <div key={index} className="chat-message">
-            <strong>{msg.userRole} - {msg.username}:</strong> {msg.text}
+        {chats.map((chat) => (
+          <div key={chat.id} className="chat-message">
+            <strong>{getUserName(chat.user_id)}:</strong> {chat.chat_content}
           </div>
         ))}
       </div>
       <div className="chat-input">
         <input
           type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
           placeholder="Type a message..."
         />
-        {/* <button onClick={sendMessage}>Send</button> */}
-        <button >Send</button>
+        <button onClick={sendMessage} disabled={!userId}>Send</button>
       </div>
     </div>
   );

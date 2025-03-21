@@ -1,69 +1,74 @@
-import React, { useState } from "react";
-import "../CSS/AlumniListPage.css";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { User } from "lucide-react"; // Placeholder icon
+import "../CSS/StudentsList.css";
 
-const Studentlist = () => {
-  const [selectedYear, setSelectedYear] = useState("All");
+const StudentsList = () => {
+  const [students, setStudents] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // Search input state
+  const navigate = useNavigate();
 
-  // Dummy data for alumni
-  const alumniData = [
-    { name: "John Doe", year: 2020, id: 1 },
-    { name: "Jane Smith", year: 2021, id: 2 },
-    { name: "Michael Johnson", year: 2020, id: 3 },
-    { name: "Emily Davis", year: 2022, id: 4 },
-    { name: "Chris Brown", year: 2021, id: 5 },
-    { name: "Patricia Wilson", year: 2022, id: 6 },
-  ];
+  useEffect(() => {
+    fetch("http://localhost:7070/getAllStudents")
+      .then((res) => res.json())
+      .then((data) => setStudents(data.students))
+      .catch((err) => console.error("Error fetching students:", err));
+  }, []);
 
-  // Extract unique years for filtering
-  const uniqueYears = [
-    "All",
-    ...Array.from(new Set(alumniData.map((alumni) => alumni.year))),
-  ];
-
-  // Filter Studentbased on selected year
-  const filteredAlumni =
-    selectedYear === "All"
-      ? alumniData
-      : alumniData.filter((alumni) => alumni.year === selectedYear);
-
-  const handleNameClick = (id) => {
-    alert(`Navigate to profile page of alumni with ID: ${id}`);
-  };
+  // Filter students based on search input
+  const filteredStudents = students.filter(
+    (student) =>
+      student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      student.stream.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div className="alumni-container">
-      <h1>Alumni List</h1>
+    <div className="students-container">
+      <h2>Student List</h2>
+      
+      {/* Search Input */}
+      <input
+        type="text"
+        placeholder="Search by name or stream..."
+        className="search-input"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
 
-      {/* Year Filter Dropdown */}
-      <div className="filter-container">
-        <label htmlFor="yearFilter">Filter by Year:</label>
-        <select
-          id="yearFilter"
-          value={selectedYear}
-          onChange={(e) => setSelectedYear(e.target.value)}
-        >
-          {uniqueYears.map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Alumni List */}
-      <ul className="alumni-list">
-        {filteredAlumni.map((alumni) => (
-          <li
-            key={alumni.id}
-            onClick={() => handleNameClick(alumni.id)}
-            className="alumni-item"
-          >
-            {alumni.name}
-          </li>
-        ))}
-      </ul>
+      <table className="students-table">
+        <thead>
+          <tr>
+            <th>Profile</th>
+            <th>Name</th>
+            <th>Stream</th>
+            <th>Current Year</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredStudents.length > 0 ? (
+            filteredStudents.map((student) => (
+              <tr key={student.id} onClick={() => navigate(`/profile/${student.id}`)}>
+                <td>
+                  {student.profilepic ? (
+                    <img src={student.profilepic} alt="Profile" className="profile-pic" />
+                  ) : (
+                    <User className="profile-icon" /> // Placeholder icon
+                  )}
+                </td>
+                <td>{student.name}</td>
+                <td>{student.stream}</td>
+                <td>{student.year}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4" className="no-results">No students found</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };
 
-export default Studentlist;
+export default StudentsList;

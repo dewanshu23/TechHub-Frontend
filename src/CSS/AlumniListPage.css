@@ -1,58 +1,65 @@
-/* Page Styling */
 .alumni-container {
-    background-color: #e6f7e6; /* Light Green */
-    min-height: 100vh;
-    padding: 20px;
-    font-family: "Inter", sans-serif;
-    text-align: center;
-  }
-  
-  /* Title */
-  h1 {
-    color: #2e7d32; /* Dark Green */
-    margin-bottom: 20px;
-  }
-  
-  /* Filter Section */
-  .filter-container {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    font-weight: bold;
-    color: #2e7d32;
-    margin-right: 10px;
-  }
-  
-  select {
-    padding: 8px;
-    border: 2px solid #4caf50;
-    border-radius: 5px;
-    background: white;
-    font-size: 16px;
-  }
-  
-  /* Alumni List */
-  .alumni-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .alumni-item {
-    background: white;
-    padding: 12px;
-    margin: 8px auto;
-    width: 60%;
-    border-radius: 8px;
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
-    font-size: 18px;
-    color: #2e7d32;
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-  }
-  
-  .alumni-item:hover {
-    background-color: #4caf50;
-    color: white;
-  }
-  
+  width: 80%;
+  margin: auto;
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #2d572c;
+}
+
+/* Search Input */
+.search-input {
+  width: 60%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Table Styling */
+.alumni-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.alumni-table th, .alumni-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.alumni-table th {
+  background-color: #4caf50;
+  color: white;
+}
+
+.alumni-table tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+/* Profile Picture */
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Placeholder Icon */
+.profile-icon {
+  width: 40px;
+  height: 40px;
+  color: #bbb;
+}
+
+/* No Results Message */
+.no-results {
+  text-align: center;
+  font-size: 16px;
+  padding: 15px;
+  color: red;
+}

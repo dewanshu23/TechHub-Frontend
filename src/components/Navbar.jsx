@@ -33,11 +33,14 @@ import "../CSS/Navbar.css"; // Import CSS
 import { FaUser } from "react-icons/fa";
 
 const Navbar = () => {
-  const userRole = localStorage.getItem("userRole"); // Get stored role
+  const user = JSON.parse(localStorage.getItem("user")); // Convert string to object
+const userRole = user ? user.userrole : null; // Get userrole or return null if user is not found
+
+// console.log(userRole); // Output: "Admin"
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("userRole"); // Clear role
+    localStorage.removeItem("user"); // Clear role
     navigate("/"); // Redirect to login or home
     window.location.reload(); // Refresh to update Navbar
   };
@@ -49,9 +52,9 @@ const Navbar = () => {
         <Link to="/notification-page">Events</Link>
         <Link to="/job-notification-page">Job Section</Link>
         <Link to="/chat">Chat</Link>
-
         {/* Show 'Users View' only for Admin */}
         {userRole === "Admin" && <Link to="/admin-user-view">Users View</Link>}
+  
         {/* Show 'Students list' only for teacher and admin */}
         {userRole === "Admin" && <Link to="/students-list">Students List</Link>}
         {userRole === "Teacher" && <Link to="/students-list">Students List</Link>}
