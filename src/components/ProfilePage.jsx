@@ -1,60 +1,51 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "../CSS/Profile.css";
 
-const ProfilePage = () => {
-  const [isEditing, setIsEditing] = useState(false);
+const Profile = () => {
   const [profileData, setProfileData] = useState({
     name: "",
     role: "",
-    email: "",
-    phone: "",
-    gender: "",
-    address: "",
     aboutMe: "",
+    passout: "",
+    stream: "",
+    email: "",
+    year: "",
+    profilePicture: "/profile.png",
     socialMedia: {
       linkedin: "",
       github: "",
       instagram: "",
     },
-    profilePicture: "https://via.placeholder.com/150",
   });
 
-  useEffect(() => {
-    fetch("http://localhost:7070/getUserProfile") // Replace with your actual API endpoint
-      .then((response) => response.json())
-      .then((data) => {
-        setProfileData({
-          name: data.name,
-          role: data.userrole,
-          email: data.email,
-          phone: data.mobile || "Not Provided",
-          gender: data.gender || "Not Provided",
-          address: data.address || "Not Provided",
-          aboutMe: data.aboutme || "",
-          socialMedia: {
-            linkedin: data.linkedin || "",
-            github: data.github || "",
-            instagram: data.instagram || "",
-          },
-          profilePicture: "https://via.placeholder.com/150", // Keeping unchanged as per request
-        });
-      })
-      .catch((error) => console.error("Error fetching user data:", error));
-  }, []);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const handleEditClick = () => {
-    if (isEditing) {
-      fetch("http://localhost:7070/updateUserProfile", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(profileData),
-      })
-        .then((response) => response.json())
-        .then((data) => console.log("Profile updated successfully:", data))
-        .catch((error) => console.error("Error updating profile:", error));
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    if (userData) {
+      setProfileData((prev) => ({
+        ...prev,
+        name: userData.name || "",
+        role: userData.userrole || "",
+        passout: userData.passout || "",
+        year: userData.year || "",
+        stream: userData.stream || "",
+        email: userData.email || "",
+        socialMedia: {
+          linkedin: userData.linkedin || "",
+          github: userData.github || "",
+          instagram: userData.instagram || "",
+        },
+      }));
     }
-    setIsEditing(!isEditing);
-  };
+
+    const storedProfile = JSON.parse(localStorage.getItem("profileData"));
+    if (storedProfile) {
+      setProfileData((prev) => ({ ...prev, ...storedProfile }));
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,67 +60,151 @@ const ProfilePage = () => {
     });
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileData({ ...profileData, profilePicture: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleEditToggle = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleSave = async () => {
+    try {
+      const response = await axios.post("/api/updateProfile", profileData);
+      if (response.status === 200) {
+        localStorage.setItem("profileData", JSON.stringify(profileData));
+        alert("Profile updated successfully");
+        setIsEditing(false);
+      }
+    } catch (error) {
+      alert("Error updating profile");
+    }
+  };
+  console.log(profileData);
+
   return (
     <div className="profile-container">
       <div className="profile-header">
-        <label htmlFor="imageUpload" className="upload-label">
-          <img
-            src={profileData.profilePicture}
-            alt="Profile"
-            className="profile-picture"
-          />
-        </label>
-        <div className="profile-info">
-          {isEditing ? (
-            <>
-              <input type="text" name="name" value={profileData.name} onChange={handleChange} className="edit-input" />
-            </>
-          ) : (
-            <>
-              <h2>{profileData.name}</h2>
-              <p>{profileData.role}</p>
-            </>
-          )}
+        <div className="profile-picture">
+          <label htmlFor="imageUpload" className="upload-label">
+            <img
+              src={profileData.profilePicture}
+              alt="Profile"
+              className="profile-picture"
+            />
+            {isEditing && (
+              <input
+                type="file"
+                id="imageUpload"
+                accept="image/*"
+                onChange={handleImageChange}
+                style={{ display: "none" }}
+              />
+            )}
+          </label>
         </div>
-      </div>
 
-      <div className="about-me">
-        <h3>About Me</h3>
-        {isEditing ? (
-          <textarea name="aboutMe" value={profileData.aboutMe} onChange={handleChange} className="edit-textarea" />
-        ) : (
-          <p>{profileData.aboutMe}</p>
-        )}
+        <div className="profile-info-details">
+          <div className="line-one">
+            {isEditing ? (
+              <input
+                type="text"
+                name="name"
+                value={profileData.name}
+                onChange={handleChange}
+                className="edit-input"
+              />
+            ) : (
+              <h2>{profileData.name}</h2>
+            )}
+            <span className="chip">{profileData.role}</span>
+          </div>
+
+          <div className="line-two">
+            {isEditing ? (
+              <textarea
+                name="aboutMe"
+                value={profileData.aboutMe}
+                onChange={handleChange}
+                className="edit-textarea"
+              />
+            ) : (
+              <p>{profileData.aboutMe || "No description provided."}</p>
+            )}
+          </div>
+
+          <div className="line-three">
+            <span>
+              <strong>{profileData.role === "Student" ? "Year" : "Passout"}:</strong>{" "}
+              {/* <strong>:</strong>{" "} */}
+              {profileData.year}
+              
+              
+            </span>
+            <span>
+              <strong>Stream:</strong> {profileData.stream}
+            </span>
+          </div>
+        </div>
       </div>
 
       <div className="personal-info">
         <h3>Personal Information</h3>
-        <div><strong>Email: </strong>{isEditing ? <input type="email" name="email" value={profileData.email} onChange={handleChange} className="edit-input" /> : <span>{profileData.email}</span>}</div>
-        <div><strong>Phone: </strong>{isEditing ? <input type="text" name="phone" value={profileData.phone} onChange={handleChange} className="edit-input" /> : <span>{profileData.phone}</span>}</div>
+
+        <div>
+          <strong>Email:</strong>{" "}
+          {isEditing ? (
+            <input
+              type="email"
+              name="email"
+              value={profileData.email}
+              onChange={handleChange}
+              className="edit-input"
+            />
+          ) : (
+            <span>{profileData.email}</span>
+          )}
+        </div>
+
+        {["linkedin", "github", "instagram"].map((platform) => (
+          <div key={platform}>
+            <strong>{platform.charAt(0).toUpperCase() + platform.slice(1)}:</strong>{" "}
+            {isEditing ? (
+              <input
+                type="text"
+                name={platform}
+                value={profileData.socialMedia[platform]}
+                onChange={handleSocialMediaChange}
+                className="edit-input"
+              />
+            ) : (
+              <a
+                href={profileData.socialMedia[platform]}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {profileData.socialMedia[platform] || "Not Provided"}
+              </a>
+            )}
+          </div>
+        ))}
       </div>
 
-      <div className="social-media">
-        <h3>Social Media Handles</h3>
-        {isEditing ? (
-          <>
-            <div><label>LinkedIn: </label><input type="text" name="linkedin" placeholder="LinkedIn URL" value={profileData.socialMedia.linkedin} onChange={handleSocialMediaChange} className="edit-input" /></div>
-            <div><label>GitHub: </label><input type="text" name="github" placeholder="GitHub URL" value={profileData.socialMedia.github} onChange={handleSocialMediaChange} className="edit-input" /></div>
-            <div><label>Instagram: </label><input type="text" name="instagram" placeholder="Instagram URL" value={profileData.socialMedia.instagram} onChange={handleSocialMediaChange} className="edit-input" /></div>
-          </>
-        ) : (
-          <ul>
-            <li>LinkedIn: <a href={profileData.socialMedia.linkedin} target="_blank" rel="noopener noreferrer">{profileData.socialMedia.linkedin || "Not Provided"}</a></li>
-            <li>GitHub: <a href={profileData.socialMedia.github} target="_blank" rel="noopener noreferrer">{profileData.socialMedia.github || "Not Provided"}</a></li>
-            <li>Instagram: <a href={profileData.socialMedia.instagram} target="_blank" rel="noopener noreferrer">{profileData.socialMedia.instagram || "Not Provided"}</a></li>
-          </ul>
-        )}
-      </div>
-
-      <div className="edit-button-container">
-        <button onClick={handleEditClick} className="edit-button">{isEditing ? "Save Profile" : "Edit Profile"}</button>
+      <div className="button-row">
+        <button onClick={isEditing ? handleSave : handleEditToggle}>
+          {isEditing ? "Save" : "Edit Profile"}
+        </button>
       </div>
     </div>
   );
 };
 
-export default ProfilePage;
+export default Profile;
+

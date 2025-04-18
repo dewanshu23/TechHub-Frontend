@@ -81,6 +81,7 @@
     width: 400px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding-top: 30px;
   }
   
   .modal-content h2 {
