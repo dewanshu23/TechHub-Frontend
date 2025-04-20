@@ -322,7 +322,7 @@ console.log(userData);
           </div>
 
           <div className={styles.lineTwo}>
-            <p>{profileData.aboutMe || ""}</p>
+            <p>{profileData.aboutMe}</p>
           </div>
 
           <div className={styles.lineThree}>
