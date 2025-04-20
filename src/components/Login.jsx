@@ -107,7 +107,10 @@ const Login = () => {
             year: data.user_data.year || "",
             userrole: data.user_data.userrole || "User", // Default to "User" if not found
           };
-        
+        let user_data = data.user_data;
+        user_data.stream = data.user_data.stream || "";
+        user_data.passout = data.user_data.passout || 0;
+
           localStorage.setItem("user", JSON.stringify(userDetails));
         } else {
           console.warn("User data not found in API response");

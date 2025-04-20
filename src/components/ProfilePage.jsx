@@ -378,8 +378,8 @@ console.log(userData);
       </div>
 
       <div className={styles.buttonRow}>
-        <button onClick={() => setShowModal(true)}>Edit Profile</button>
-        <button onClick={handleChangePassword}>Change Password</button>
+        {/* <button onClick={() => setShowModal(true)}>Edit Profile</button>
+        <button onClick={handleChangePassword}>Change Password</button> */}
       </div>
 
       {showModal && (
