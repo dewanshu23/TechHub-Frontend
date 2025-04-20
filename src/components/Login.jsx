@@ -105,6 +105,8 @@ const Login = () => {
             stream: data.user_data.stream || "", // Default empty string if not provided
             passout: data.user_data.passout || 0, // Default value if null
             year: data.user_data.year || "",
+            linkedin: data.user_data.linkedin,
+            twitter: data.user_data.twitter,
             userrole: data.user_data.userrole || "User", // Default to "User" if not found
           };
         let user_data = data.user_data;
