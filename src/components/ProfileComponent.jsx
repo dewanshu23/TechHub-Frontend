@@ -15,8 +15,7 @@ const Profile = () => {
       profilePicture: "/profile.png",
       socialMedia: {
           linkedin: "",
-          github: "",
-          instagram: "",
+          twittergithub: "",
         },
     });
 
@@ -38,8 +37,8 @@ const Profile = () => {
         profilePicture: state.profilepic || "/profile.png",
         socialMedia: {
           linkedin: state.linkedin || "",
-          github: state.github || "",
-          instagram: state.instagram || "",
+          twitter: state.twitter || "",
+         
         },
       };
       setProfileData((prev) => ({ ...prev, ...updated }));
@@ -59,8 +58,7 @@ const Profile = () => {
           profilePicture: userData.profilepic || "/profile.png",
           socialMedia: {
             linkedin: userData.linkedin || "",
-            github: userData.github || "",
-            instagram: userData.instagram || "",
+            twitter: userData.twitter || "",
           },
         };
         setProfileData((prev) => ({ ...prev, ...updated }));
@@ -123,7 +121,7 @@ const Profile = () => {
           <strong>Email:</strong> {profileData.email}
         </div>
 
-        {["linkedin", "github", "instagram"].map((platform) => (
+        {["linkedin", "twitter"].map((platform) => (
           <div key={platform}>
             <strong>
               {platform.charAt(0).toUpperCase() + platform.slice(1)}:
