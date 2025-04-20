@@ -39,11 +39,46 @@ const userRole = user ? user.userrole : null; // Get userrole or return null if 
 // console.log(userRole); // Output: "Admin"
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("user"); // Clear role
-    navigate("/"); // Redirect to login or home
-    window.location.reload(); // Refresh to update Navbar
+  // const handleLogout = () => {
+  //   localStorage.removeItem("user"); // Clear role
+  //   navigate("/"); // Redirect to login or home
+  //   window.location.reload(); // Refresh to update Navbar
+  // };
+
+  const handleLogout = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const userId = user?.id; // Assuming 'id' is stored in localStorage under 'user'
+  
+      if (!userId) {
+        console.error("User ID not found in localStorage.");
+        return;
+      }
+  
+      // Call the logout API
+      const response = await fetch("http://localhost:7070/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: userId }),
+      });
+  
+      if (response.ok) {
+        console.log("Logged out successfully.");
+      } else {
+        console.error("Failed to log out.");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      // Clear local storage and refresh regardless of API success/failure
+      localStorage.removeItem("user");
+      navigate("/");
+      window.location.reload();
+    }
   };
+  
 
   return (
     <nav className="navbar">

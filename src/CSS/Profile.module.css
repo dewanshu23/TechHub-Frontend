@@ -1,5 +1,5 @@
 /* Global Container */
-.profile-container {
+.profileContainer {
   max-width: 950px;
   margin: 40px auto;
   padding: 30px;
@@ -11,7 +11,7 @@
 }
 
 /* Header Section */
-.profile-header {
+.profileHeader {
   display: flex;
   align-items: center;
   gap: 30px;
@@ -19,46 +19,45 @@
 }
 
 /* Profile Image */
-.profile-picture {
+.profilePicture {
   width: 140px;
   height: 140px;
   border-radius: 50%;
   object-fit: cover;
- 
   transition: transform 0.3s ease;
 }
-.profile-picture:hover {
+
+.profilePicture:hover {
   transform: scale(1.05);
 }
-.upload-label {
+
+.uploadLabel {
   cursor: pointer;
 }
 
 /* Profile Details */
-.profile-info-details {
+.profileInfoDetails {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 12px;
- 
-  height: 115px;
+  height: auto;
   width: 200px;
- align-items: left;
- padding: 12px 20px;
-background-color: #e3f5e9;
-border-radius: 9px;
+  align-items: left;
+  padding: 12px 20px;
+  background-color: #e3f5e9;
+  border-radius: 9px;
   font-weight: 500;
   border: 1px solid #bbf7d0;
-  
 }
 
-.line-one {
+.lineOne {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.line-one h2 {
+.lineOne h2 {
   font-size: 24px;
   font-weight: 600;
   margin: 0;
@@ -74,12 +73,12 @@ border-radius: 9px;
   border: 1px solid #bbf7d0;
 }
 
-.line-two {
+.lineTwo {
   font-size: 15px;
   color: #475569;
 }
 
-.line-three {
+.lineThree {
   display: flex;
   gap: 25px;
   font-size: 14px;
@@ -87,38 +86,39 @@ border-radius: 9px;
 }
 
 /* Personal Info Section */
-.personal-info {
+.personalInfo {
   margin-top: 30px;
   padding-top: 25px;
   border-top: 1px solid #e2e8f0;
 }
 
-.personal-info h3 {
+.personalInfo h3 {
   font-size: 18px;
   font-weight: 600;
   color: #0f172a;
   margin-bottom: 20px;
 }
 
-.personal-info > div {
+.personalInfo > div {
   margin-bottom: 14px;
   font-size: 15px;
   display: flex;
   flex-direction: column;
 }
 
-.personal-info a {
+.personalInfo a {
   color: #2563eb;
   text-decoration: none;
   word-break: break-all;
 }
-.personal-info a:hover {
+
+.personalInfo a:hover {
   text-decoration: underline;
 }
 
 /* Editable Inputs */
-.edit-input,
-.edit-textarea {
+.editInput,
+.editTextarea {
   width: 100%;
   padding: 10px 12px;
   font-size: 15px;
@@ -128,18 +128,18 @@ border-radius: 9px;
   margin-top: 4px;
 }
 
-.edit-textarea {
+.editTextarea {
   resize: vertical;
   height: 80px;
 }
 
 /* Button */
-.button-row {
+.buttonRow {
   margin-top: 30px;
   text-align: right;
 }
 
-.button-row button {
+.buttonRow button {
   padding: 10px 22px;
   background-color: #10b981;
   color: white;
@@ -151,23 +151,60 @@ border-radius: 9px;
   transition: background 0.3s ease;
 }
 
-.button-row button:hover {
+.buttonRow button:hover {
   background-color: #059669;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .profile-header {
+  .profileHeader {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .line-three {
+  .lineThree {
     flex-direction: column;
     gap: 6px;
   }
 
-  .button-row {
+  .buttonRow {
     text-align: center;
   }
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+}
+
+.modal input,
+.modal textarea {
+  display: block;
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: space-between;
 }

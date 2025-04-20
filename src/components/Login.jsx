@@ -88,9 +88,10 @@ const Login = () => {
           password, // Ensure it matches the backend's expected format
         }),
       });
-  
+      
       const data = await response.json();
       console.log("API Response:", data);
+      console.log(data.user_data);
   
       if (response.ok) {
         console.log("Login Successful");
@@ -111,6 +112,7 @@ const Login = () => {
         } else {
           console.warn("User data not found in API response");
         }
+        
         
   
         navigate("/alumni-list"); // Redirect after storing role

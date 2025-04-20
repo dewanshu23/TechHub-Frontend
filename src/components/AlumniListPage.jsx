@@ -177,45 +177,141 @@
 
 // export default UserList;
 
+// import React, { useEffect, useState } from "react";
+// import { useLocation, useParams } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+// import { User } from "lucide-react"; // Placeholder icon
+// import "../CSS/AlumniListPage.css";
+
+
+
+// const AlumniListPage = () => {
+//   const [alumni, setAlumni] = useState([]); // Renamed state
+//   const [searchTerm, setSearchTerm] = useState(""); // Search input state
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     fetch("http://localhost:7070/getAllAlumnis")
+//       .then((res) => res.json())
+//       .then((data) => {
+//         console.log("API Response:", data); // Debugging log
+//         if (Array.isArray(data.alumni)) {
+//           setAlumni(data.alumni); // Corrected from `setStudents`
+//         } else {
+//           setAlumni([]); // Handle unexpected response format
+//         }
+//         console.log(data);
+//       })
+//       .catch((err) => {
+//         console.error("Error fetching alumni:", err);
+//         setAlumni([]); // Prevent undefined errors
+//       });
+//   }, []);
+
+//   // Filter alumni based on search input
+//   const filteredAlumni = alumni.filter(
+//     (person) =>
+//       person.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//       person.stream.toLowerCase().includes(searchTerm.toLowerCase())
+//   );
+//   const AlumniProfile = () => {
+//     const { state } = useLocation(); // receive passed data
+//     const { alumni } = state || {}; // destructure
+  
+//     if (!alumni) {
+//       return <div>No alumni data found. Please go back and try again.</div>;
+//     }}
+//   return (
+//     <div className="alumni-container">
+//       <h2>Alumni List</h2>
+      
+//       {/* Search Input */}
+//       <input
+//         type="text"
+//         placeholder="Search by name or stream..."
+//         className="search-input"
+//         value={searchTerm}
+//         onChange={(e) => setSearchTerm(e.target.value)}
+//       />
+
+//       <table className="alumni-table">
+//         <thead>
+//           <tr>
+//             <th>Profile</th>
+//             <th>Name</th>
+//             <th>Stream</th>
+//             <th>Passout Year</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {filteredAlumni.length > 0 ? (
+//             filteredAlumni.map((person) => (
+//               <tr key={person.id} onClick={() => navigate(`/profile/${person.id}`)}>
+//                 <td>
+//                   {person.profilepic ? (
+//                     <img src={person.profilepic} alt="Profile" className="profile-pic" />
+//                   ) : (
+//                     <User className="profile-icon" /> // Placeholder icon
+//                   )}
+//                 </td>
+//                 <td>{person.name}</td>
+//                 <td>{person.stream}</td>
+//                 <td>{person.passout}</td> {/* Updated to show passout year */}
+//               </tr>
+//             ))
+//           ) : (
+//             <tr>
+//               <td colSpan="4" className="no-results">No alumni found</td>
+//             </tr>
+//           )}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// };
+
+// export default AlumniListPage;
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "lucide-react"; // Placeholder icon
 import "../CSS/AlumniListPage.css";
 
 const AlumniListPage = () => {
-  const [alumni, setAlumni] = useState([]); // Renamed state
-  const [searchTerm, setSearchTerm] = useState(""); // Search input state
+  const [alumni, setAlumni] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:7070/getAllAlumnis")
       .then((res) => res.json())
       .then((data) => {
-        console.log("API Response:", data); // Debugging log
         if (Array.isArray(data.alumni)) {
-          setAlumni(data.alumni); // Corrected from `setStudents`
+          setAlumni(data.alumni);
         } else {
-          setAlumni([]); // Handle unexpected response format
+          setAlumni([]);
         }
       })
       .catch((err) => {
         console.error("Error fetching alumni:", err);
-        setAlumni([]); // Prevent undefined errors
+        setAlumni([]);
       });
   }, []);
 
-  // Filter alumni based on search input
   const filteredAlumni = alumni.filter(
     (person) =>
       person.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       person.stream.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleRowClick = (person) => {
+    navigate("/profile", { state: person });
+  };
+
   return (
     <div className="alumni-container">
       <h2>Alumni List</h2>
-      
-      {/* Search Input */}
+
       <input
         type="text"
         placeholder="Search by name or stream..."
@@ -236,22 +332,28 @@ const AlumniListPage = () => {
         <tbody>
           {filteredAlumni.length > 0 ? (
             filteredAlumni.map((person) => (
-              <tr key={person.id} onClick={() => navigate(`/profile/${person.id}`)}>
+              <tr key={person.id} onClick={() => handleRowClick(person)}>
                 <td>
                   {person.profilepic ? (
-                    <img src={person.profilepic} alt="Profile" className="profile-pic" />
+                    <img
+                      src={person.profilepic}
+                      alt="Profile"
+                      className="profile-pic"
+                    />
                   ) : (
-                    <User className="profile-icon" /> // Placeholder icon
+                    <User className="profile-icon" />
                   )}
                 </td>
                 <td>{person.name}</td>
                 <td>{person.stream}</td>
-                <td>{person.passout}</td> {/* Updated to show passout year */}
+                <td>{person.passout}</td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="4" className="no-results">No alumni found</td>
+              <td colSpan="4" className="no-results">
+                No alumni found
+              </td>
             </tr>
           )}
         </tbody>

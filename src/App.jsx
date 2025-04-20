@@ -99,6 +99,9 @@ import StudentsList from "./components/StudentsList";
 import ChatPage from "./components/ChatPage";
 import './style.css'
 import { AuthProvider } from "./context/AuthContext";
+import ResetPassword from "./components/ResetPassword"
+import Profile from "./components/ProfileComponent"
+import ChangePasswordPage from "./components/ChangePassword"
 
 const AppContent = () => {
   const location = useLocation();  
@@ -110,12 +113,15 @@ const AppContent = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/notification-page" element={<NotificationPage />} />
         <Route path="/job-notification-page" element={<JobNotification />} />
         <Route path="/profile-page" element={<ProfilePage />} />
         <Route path="/alumni-list" element={<AlumniListPage />} />
         <Route path="/registration-page" element={<Register />} />
         <Route path="/chat" element={<ChatPage />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/change-password" element={<ChangePasswordPage />} />
         
         {/* Protected Pages */}
         <Route 

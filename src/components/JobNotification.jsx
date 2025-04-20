@@ -90,7 +90,7 @@ const JobNotification = () => {
       <h1>Job Notifications</h1>
 
       {/* Show "Add Job Notification" button only for Admin and Teacher */}
-      {(userRole === "Admin" || userRole === "Teacher") && (
+      {(userRole !== "Student") && (
         <button onClick={handleAddJobClick} className="add-job-btn">
           <FaPlus /> Add Job Notification
         </button>
