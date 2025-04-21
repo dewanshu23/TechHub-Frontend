@@ -213,7 +213,7 @@ import styles from "../CSS/Profile.module.css";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [profileData, setProfileData] = useState({
     id: "",
     name: "",
@@ -236,7 +236,7 @@ const Profile = () => {
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     const storedProfile = JSON.parse(localStorage.getItem("profileData"));
-console.log(userData);
+console.log(profileData);
 
     if (userData) {
       const updated = {
@@ -246,12 +246,15 @@ console.log(userData);
         passout: userData.passout || "",
         year: userData.year || "",
         stream: userData.stream || "",
-        email: userData.email || "",
-        linkedin: userData.linkedin || "",
-        twitter: userData.twitter || "",
-        
+        email: userData.email || "", 
+        socialMedia: {
+          linkedin: userData.linkedin || "",
+          twitter: userData.twitter || "",
+         
+        },
+      
       };
-      console.log(updated)
+      // console.log(updated.linkedin)
       setProfileData((prev) => ({ ...prev, ...updated }));
       setFormData((prev) => ({ ...prev, ...updated }));
     }
@@ -260,7 +263,7 @@ console.log(userData);
       setProfileData((prev) => ({ ...prev, ...storedProfile }));
       setFormData((prev) => ({ ...prev, ...storedProfile }));
     }
-  }, []);
+  });
   
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -286,9 +289,9 @@ console.log(userData);
       reader.readAsDataURL(file);
     }
   };
-  const handleChangePassword = async ()=>{
-    navigate('/change-password', { state: { email: profileData.email  } });
-  }
+  // const handleChangePassword = async ()=>{
+  //   navigate('/change-password', { state: { email: profileData.email  } });
+  // }
 
   const handleSave = async () => {
     try {
