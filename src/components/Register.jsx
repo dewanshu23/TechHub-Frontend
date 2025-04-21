@@ -13,7 +13,7 @@ const Register = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [errorMessage, setErrorMessage] = useState(""); // State for error handling
   const navigate = useNavigate();
-
+const [passwordError, setPasswordError] = useState("");
   const userTypeChanger = () => {
     setIsAlumni(!isAlumni);
     setYearOrPassout(isAlumni ? "First Year" : "2024"); // Default passout year
@@ -62,7 +62,30 @@ const Register = () => {
       setErrorMessage("Failed to register. Please try again.");
     }
   };
+  const validatePassword = (password) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])[\S]{8,}$/;
+    return regex.test(password);
+  };
+  
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+    // Clear error while typing
+    setPasswordError("");
+  };
 
+  const handlePasswordBlur = () => {
+    if (!validatePassword(password)) {
+      setPasswordError(
+        "Password must be at least 8 characters and include uppercase, lowercase, number, special character. No spaces."
+      );
+    }
+  };
+  
+  const handleConfirmPasswordChange = (e) => {
+    const value = e.target.value;
+    setConfirmPassword(value);
+  };
   return (
     <div className="register-container">
       <div className="register-box">
@@ -85,7 +108,7 @@ const Register = () => {
         {errorMessage && <p className="error-message">{errorMessage}</p>}
 
         <form onSubmit={handleSubmit}>
-          <div className="input-group">
+          {/* <div className="input-group">
             <label>Full Name:</label>
             <input
               type="text"
@@ -93,7 +116,23 @@ const Register = () => {
               onChange={(e) => setFullName(e.target.value)}
               required
             />
-          </div>
+          </div> */}
+          <div className="input-group">
+  <label>Full Name:</label>
+  <input
+    type="text"
+    value={fullName}
+    onChange={(e) => {
+      const value = e.target.value;
+      // Allow only letters and spaces
+      if (/^[a-zA-Z\s]*$/.test(value)) {
+        setFullName(value);
+      }
+    }}
+    required
+  />
+</div>
+
 
           <div className="input-group">
             <label>Email:</label>
@@ -139,7 +178,7 @@ const Register = () => {
             </select>
           </div>
 
-          <div className="input-group">
+          {/* <div className="input-group">
             <label>Password:</label>
             <input
               type="password"
@@ -157,7 +196,32 @@ const Register = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
-          </div>
+
+          </div> */}
+
+<div className="input-group">
+        <label>Password:</label>
+        <input
+          type="password"
+          value={password}
+          onChange={handlePasswordChange}
+          onBlur={handlePasswordBlur}
+          required
+        />
+        {passwordError && (
+          <p style={{ color: "red", fontSize: "0.9rem" }}>{passwordError}</p>
+        )}
+      </div>
+
+      <div className="input-group">
+        <label>Confirm Password:</label>
+        <input
+          type="password"
+          value={confirmPassword}
+          onChange={handleConfirmPasswordChange}
+          required
+        />
+      </div>
 
           <button type="submit">Register</button>
         </form>
